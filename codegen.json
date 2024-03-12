@@ -1,0 +1,17 @@
+{
+  "overwrite": true,
+  "config": {
+    "strict": true,
+    "namingConvention": {
+      "typeNames": "pascal-case#pascalCase",
+      "enumValues": "keep"
+    },
+    "maybeValue": "T"
+  },
+  "generates": {
+    "src/generated.ts": {
+      "schema": "http://localhost:3000/graphql",
+      "plugins": ["typescript", "typescript-operations"]
+    }
+  }
+}

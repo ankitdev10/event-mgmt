@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TestService } from './test.service';
+import { UserService } from './user.service';
 
-const services = [TestService];
+const services = [UserService];
 @Module({
   imports: [],
   controllers: [],

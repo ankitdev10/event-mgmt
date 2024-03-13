@@ -1,0 +1,17 @@
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserResult!
+}
+
+type Query {
+  user(id: ID!): User
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  password: String!
+  phoneNumber: String
+}
+
+union CreateUserResult = User | UserAlreadyExistsError

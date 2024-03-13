@@ -1,10 +1,11 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ErrorTypeResolver } from 'src/common/errors';
 import { ServicesModule } from 'src/services/services.module';
-import { TestResolver } from './resolvers/test.resolver';
+import { UserResolver } from './resolvers/user.resolver';
 
-const resolvers = [TestResolver];
+const resolvers = [UserResolver];
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ const resolvers = [TestResolver];
       driver: ApolloDriver,
       playground: true,
       typePaths: ['./**/*.graphql'],
+      resolvers: [ErrorTypeResolver],
     }),
   ],
   providers: [...resolvers],

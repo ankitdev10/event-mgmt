@@ -1,0 +1,29 @@
+#############
+# ENTITY TYPE #
+#############
+
+type User {
+  id: String!
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  phoneNumber: String
+}
+
+#############
+# ERROR TYPES #
+#############
+enum ErrorCode {
+  UNKNOWN_ERROR
+  USER_ALREADY_EXISTS
+}
+
+interface ErrorResult {
+  errorCode: ErrorCode!
+  message: String!
+}
+
+type UserAlreadyExistsError implements ErrorResult {
+  errorCode: ErrorCode!
+  message: String!
+}

@@ -51,10 +51,13 @@ export class UserService {
     const match = compareSync(password, user.password);
     if (!match) return new InvalidCredentialsError();
 
-    const token = await this.jwtService.signAsync({ id: user.id });
+    delete user.password;
+    const token = await this.jwtService.signAsync({ user });
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    ctx.res.header('Authorization', token);
+
+    ctx.res.header('Authorization', `Bearer ${token}`);
 
     return user;
   }

@@ -7,7 +7,7 @@ const services = [UserService];
   imports: [
     JwtModule.register({
       global: true,
-      secret: String(process.env.JWT_SECRET),
+      secret: 'Test',
       signOptions: { expiresIn: '1d' },
     }),
   ],

@@ -12,6 +12,7 @@ import {
   QueryUserArgs,
 } from 'src/generated';
 import { UserService } from 'src/services/user.service';
+import { Allow } from '../decorators/allow.decorator';
 
 @Resolver()
 export class UserResolver {
@@ -32,6 +33,7 @@ export class UserResolver {
     return this.userSerice.users();
   }
 
+  @Allow()
   @Mutation()
   async login(
     @Args() args: MutationLoginArgs,

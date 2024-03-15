@@ -11,7 +11,13 @@ export class UserAlreadyExistsError extends ErrorResult {
   readonly message: string = 'User already exists with this email.';
 }
 
-const errorTypeNames = ['UserAlreadyExistsError'];
+export class InvalidCredentialsError extends ErrorResult {
+  readonly __typename = 'InvalidCredentialsError';
+  readonly errorCode: ErrorCode = ErrorCode.INVALID_CREDENTIALS;
+  readonly message: string = 'Invalid credentials.';
+}
+
+const errorTypeNames = ['UserAlreadyExistsError,InvalidCredentialsError'];
 
 function isGraphQLError(input: any) {
   return (
@@ -20,6 +26,11 @@ function isGraphQLError(input: any) {
 }
 export const ErrorTypeResolver = {
   CreateUserResult: {
+    __resolveType(value: any) {
+      return isGraphQLError(value) ? value.__typename : 'User';
+    },
+  },
+  LoginResult: {
     __resolveType(value: any) {
       return isGraphQLError(value) ? value.__typename : 'User';
     },

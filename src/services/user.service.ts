@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { hashSync } from 'bcrypt';
-import { UserAlreadyExistsError } from 'src/common/errors';
+import { GraphQLExecutionContext } from '@nestjs/graphql';
+import { JwtService } from '@nestjs/jwt';
+import { compareSync, hashSync } from 'bcrypt';
+import {
+  InvalidCredentialsError,
+  UserAlreadyExistsError,
+} from 'src/common/errors';
 import { ID } from 'src/common/types';
 import { User } from 'src/entities';
 import { CreateUserInput } from 'src/generated';
 import { DataSource, Repository } from 'typeorm';
-
 @Injectable()
 export class UserService {
   private userRepo: Repository<User>;
-  constructor(private dataSource: DataSource) {
+  constructor(
+    private dataSource: DataSource,
+    private jwtService: JwtService,
+  ) {
     this.userRepo = this.dataSource.getRepository(User);
   }
   async createUser(
@@ -28,6 +35,30 @@ export class UserService {
     return this.userRepo.save(user);
   }
 
+  async login(
+    ctx: GraphQLExecutionContext,
+    username: string,
+    password: string,
+  ): Promise<User | InvalidCredentialsError> {
+    const user = await this.userRepo
+      .findOne({
+        where: {
+          emailAddress: username,
+        },
+      })
+      .then((u) => u ?? undefined);
+    if (!user) return new InvalidCredentialsError();
+    const match = compareSync(password, user.password);
+    if (!match) return new InvalidCredentialsError();
+
+    const token = await this.jwtService.signAsync({ id: user.id });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    ctx.res.header('Authorization', token);
+
+    return user;
+  }
+
   async user(id: ID): Promise<User | undefined> {
     return this.userRepo
       .findOne({
@@ -36,5 +67,9 @@ export class UserService {
         },
       })
       .then((u) => u ?? undefined);
+  }
+
+  async users(): Promise<User[]> {
+    return this.userRepo.find();
   }
 }

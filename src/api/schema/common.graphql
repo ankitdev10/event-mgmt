@@ -16,6 +16,7 @@ type User {
 enum ErrorCode {
   UNKNOWN_ERROR
   USER_ALREADY_EXISTS
+  INVALID_CREDENTIALS
 }
 
 interface ErrorResult {
@@ -24,6 +25,11 @@ interface ErrorResult {
 }
 
 type UserAlreadyExistsError implements ErrorResult {
+  errorCode: ErrorCode!
+  message: String!
+}
+
+type InvalidCredentialsError implements ErrorResult {
   errorCode: ErrorCode!
   message: String!
 }

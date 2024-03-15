@@ -25,6 +25,7 @@ export type CreateUserInput = {
 export type CreateUserResult = User | UserAlreadyExistsError;
 
 export enum ErrorCode {
+  INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   USER_ALREADY_EXISTS = 'USER_ALREADY_EXISTS'
 }
@@ -34,9 +35,18 @@ export type ErrorResult = {
   message: Scalars['String']['output'];
 };
 
+export type InvalidCredentialsError = ErrorResult & {
+  __typename?: 'InvalidCredentialsError';
+  errorCode: ErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type LoginResult = InvalidCredentialsError | User;
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: CreateUserResult;
+  login: LoginResult;
 };
 
 
@@ -44,9 +54,16 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
+
+export type MutationLoginArgs = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   user?: Maybe<User>;
+  users?: Maybe<Array<Maybe<User>>>;
 };
 
 

@@ -15,6 +15,7 @@ const resolvers = [UserResolver];
       playground: true,
       typePaths: ['./**/*.graphql'],
       resolvers: [ErrorTypeResolver],
+      context: ({ req, res }) => ({ req, res }),
     }),
   ],
   providers: [...resolvers],

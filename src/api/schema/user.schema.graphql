@@ -1,9 +1,11 @@
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserResult!
+  login(username: String!, password: String!): LoginResult!
 }
 
 type Query {
   user(id: ID!): User
+  users: [User]
 }
 
 input CreateUserInput {
@@ -15,3 +17,4 @@ input CreateUserInput {
 }
 
 union CreateUserResult = User | UserAlreadyExistsError
+union LoginResult = User | InvalidCredentialsError

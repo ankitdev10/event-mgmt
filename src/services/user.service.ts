@@ -56,6 +56,7 @@ export class UserService {
 
     ctx.res.header('Authorization', `Bearer ${token}`);
     ctx.user = user;
+
     return user;
   }
 

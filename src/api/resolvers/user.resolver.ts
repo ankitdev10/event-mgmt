@@ -12,6 +12,7 @@ import { RequestContext } from '../request-context';
 export class UserResolver {
   constructor(private userSerice: UserService) {}
 
+  @Allow()
   @Mutation()
   async createUser(@Args() args: MutationCreateUserArgs) {
     return this.userSerice.createUser(args.input);

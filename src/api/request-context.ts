@@ -1,46 +1,26 @@
-// import { Request, Response } from 'express';
-// import { ApiType, CachedSession, Role } from 'src/common/types';
+import { Request, Response } from 'express';
+import { User } from 'src/generated';
 
-// export class RequestContext {
-//   private readonly _req: Request;
-//   private readonly _res: Response;
-//   private _session?: CachedSession;
-//   private readonly _apiType: ApiType;
+export class RequestContext {
+  private readonly _req: Request;
+  private readonly _res: Response;
+  public _user: User;
 
-//   constructor(options: {
-//     req: Request;
-//     res: Response;
-//     session: CachedSession | undefined;
-//     apiType: ApiType;
-//   }) {
-//     this._req = options.req;
-//     this._res = options.res;
-//     this._session = options.session;
-//     this._apiType = options.apiType;
-//   }
+  constructor(options: { req: Request; res: Response; user: User }) {
+    this._req = options.req;
+    this._res = options.res;
+    this._user = options.user;
+  }
 
-//   get req(): Request {
-//     return this._req;
-//   }
+  get req(): Request {
+    return this._req;
+  }
 
-//   get res(): Response {
-//     return this._res;
-//   }
+  get res(): Response {
+    return this._res;
+  }
 
-//   get apiType(): ApiType {
-//     return this._apiType;
-//   }
-
-//   get session(): CachedSession | undefined {
-//     return this._session;
-//   }
-
-//   userHasRole(role: Role): boolean {
-//     if (!this.session) return false;
-//     return this.session.user.role === role;
-//   }
-
-//   setSession(session: CachedSession) {
-//     this._session = session;
-//   }
-// }
+  set user(user: User) {
+    this._user = user;
+  }
+}

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { GraphQLExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcrypt';
+import { RequestContext } from 'src/api/request-context';
 import {
   InvalidCredentialsError,
   UserAlreadyExistsError,
@@ -36,7 +36,7 @@ export class UserService {
   }
 
   async login(
-    ctx: GraphQLExecutionContext,
+    ctx: RequestContext,
     username: string,
     password: string,
   ): Promise<User | InvalidCredentialsError> {
@@ -54,11 +54,8 @@ export class UserService {
     delete user.password;
     const token = await this.jwtService.signAsync({ user });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-
     ctx.res.header('Authorization', `Bearer ${token}`);
-
+    ctx.user = user;
     return user;
   }
 

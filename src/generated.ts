@@ -12,6 +12,13 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+  JSON: { input: any; output: any; }
+};
+
+export type CreateScheduleInput = {
+  schedule: Scalars['JSON']['input'];
+  weekStart?: InputMaybe<Scalars['Date']['input']>;
 };
 
 export type CreateUserInput = {
@@ -45,8 +52,14 @@ export type LoginResult = InvalidCredentialsError | User;
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createSchedule?: Maybe<Scalars['String']['output']>;
   createUser: CreateUserResult;
   login: LoginResult;
+};
+
+
+export type MutationCreateScheduleArgs = {
+  input?: InputMaybe<CreateScheduleInput>;
 };
 
 

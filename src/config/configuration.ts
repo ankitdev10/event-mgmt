@@ -1,8 +1,9 @@
 import { join } from 'path';
 import { User } from 'src/entities';
+import { Schedule } from 'src/entities/schedule.entity';
 import { DataSourceOptions } from 'typeorm';
 
-const entity = [User];
+const entity = [User, Schedule];
 
 export default (): AppConfig => ({
   apiOptions: {

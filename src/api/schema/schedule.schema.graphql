@@ -1,0 +1,8 @@
+type Mutation {
+  createSchedule(input: CreateScheduleInput): String
+}
+
+input CreateScheduleInput {
+  schedule: JSON!
+  weekStart: Date
+}

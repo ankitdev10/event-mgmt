@@ -8,24 +8,19 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Schedule {
   @PrimaryGeneratedColumn()
   id: ID;
 
-  @Column()
-  firstName: string;
+  @Column('simple-json', { default: [] })
+  schedule: Record<string, string>[];
 
-  @Column()
-  lastName: string;
+  @Column('date')
+  weekStart: Date;
 
-  @Column({ unique: true })
-  emailAddress: string;
-
-  @Column()
-  password: string;
-
-  @Column({ nullable: true })
-  phoneNumber?: string;
+  //   @OneToOne(() => User)
+  //   @JoinColumn()
+  //   createdBy: User;
 
   @CreateDateColumn() createdAt: Date;
 

@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Schedule {
@@ -18,9 +20,8 @@ export class Schedule {
   @Column('date')
   weekStart: Date;
 
-  //   @OneToOne(() => User)
-  //   @JoinColumn()
-  //   createdBy: User;
+  @ManyToOne(() => User, (user) => user.schedules)
+  createdBy: User;
 
   @CreateDateColumn() createdAt: Date;
 

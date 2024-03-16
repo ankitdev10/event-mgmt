@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { RequestContext } from 'src/api/request-context';
 import { User } from 'src/entities';
 import { Schedule } from 'src/entities/schedule.entity';
 import { CreateScheduleInput } from 'src/generated';
@@ -18,9 +19,21 @@ export class ScheduleService {
     this.scheduleRepo = this.dataSource.getRepository(Schedule);
   }
 
-  async createSchedule(input: CreateScheduleInput) {
+  async createSchedule(
+    ctx: RequestContext,
+    input: CreateScheduleInput,
+  ): Promise<any> {
     const schedule = this.scheduleRepo.create(input);
-    console.log(schedule);
-    return await this.scheduleRepo.save(schedule);
+    const { user } = ctx;
+    if (!user) throw new UnauthorizedException();
+    schedule.createdBy = ctx.user;
+
+    // return await this.scheduleRepo.save(schedule);
+  }
+
+  async getAllSchedules() {
+    return this.scheduleRepo.find({
+      relations: ['createdBy'],
+    });
   }
 }

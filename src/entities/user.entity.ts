@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Schedule } from './schedule.entity';
 
 @Entity()
 export class User {
@@ -26,6 +28,9 @@ export class User {
 
   @Column({ nullable: true })
   phoneNumber?: string;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.createdBy)
+  schedules: Schedule[];
 
   @CreateDateColumn() createdAt: Date;
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcrypt';
 import { RequestContext } from 'src/api/request-context';
@@ -53,7 +53,7 @@ export class UserService {
 
     delete user.password;
     const token = await this.jwtService.signAsync({ user });
-
+    console.log(ctx.res);
     ctx.res.header('Authorization', `Bearer ${token}`);
     ctx.user = user;
 
@@ -68,6 +68,26 @@ export class UserService {
         },
       })
       .then((u) => u ?? undefined);
+  }
+  async getSession(token: string): Promise<any> {
+    let user: User | undefined = undefined;
+    try {
+      const payload = await this.jwtService.verifyAsync(token.split(' ')[1], {
+        secret: 'Test',
+      });
+      if (!payload) throw new UnauthorizedException();
+
+      user = await this.userRepo.findOne({
+        where: {
+          id: payload.id,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      throw new UnauthorizedException();
+    }
+
+    return user;
   }
 
   async users(): Promise<User[]> {

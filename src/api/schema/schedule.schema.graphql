@@ -1,5 +1,9 @@
 type Mutation {
-  createSchedule(input: CreateScheduleInput): String
+  createSchedule(input: CreateScheduleInput): Schedule
+}
+
+type Query {
+  schedules: [Schedule]
 }
 
 input CreateScheduleInput {

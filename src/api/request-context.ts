@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
-import { User } from 'src/generated';
+import { User } from 'src/entities';
 
 export class RequestContext {
   private readonly _req: Request;
   private readonly _res: Response;
-  public _user: User;
+  private _user: User;
 
-  constructor(options: { req: Request; res: Response; user: User }) {
+  constructor(options: { req: Request; res: Response }) {
     this._req = options.req;
     this._res = options.res;
-    this._user = options.user;
   }
 
   get req(): Request {

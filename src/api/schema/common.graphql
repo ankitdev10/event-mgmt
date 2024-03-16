@@ -12,6 +12,13 @@ type User {
   phoneNumber: String
 }
 
+type Schedule {
+  id: String!
+  schedule: JSON
+  weekStart: Date
+  createdBy: User
+}
+
 #############
 # ERROR TYPES #
 #############
